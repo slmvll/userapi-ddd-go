@@ -6,6 +6,8 @@ import (
 
 	"userapi-ddd-go/pkg/domain/user"
 
+	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -40,6 +42,31 @@ func (ur *MongoUserRepository) AddUser(user user.User) error {
 		return err
 	}
 	return nil
+}
+
+func (ur *MongoUserRepository) GetUser(id uuid.UUID) (user.User, error) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	resultUser := ur.user.FindOne(ctx, bson.M{"id": id})
+
+	var retrievedUser MongoUser
+	err := resultUser.Decode(&retrievedUser)
+	if err != nil {
+		return user.User{}, err
+	}
+	return retrievedUser.ToDomain(), nil
+}
+
+func (m MongoUser) ToDomain() user.User {
+	// Create a ProxyUser
+	u := user.User{
+		Id:       m.Id,
+		Email:    m.Email,
+		Password: m.Password,
+		Status:   m.Status,
+	}
+	return u
 }
 
 func Create(u user.User) *MongoUser {

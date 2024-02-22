@@ -7,6 +7,7 @@ import (
 	"userapi-ddd-go/pkg/domain/user"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type UserController struct {
@@ -39,4 +40,31 @@ func (uc UserController) AddUser(c *gin.Context) {
 	}
 	body.Id = id
 	c.JSON(http.StatusAccepted, &body)
+}
+
+// @Summary get a user record by ID
+// @ID get-user-by-id
+// @Produce json
+// @Param id path string true "user ID"
+// @Success 200 {object} user.User
+// @Failure 404 {object} object
+// @Router /user/{id} [get]
+func (uc UserController) GetUserById(c *gin.Context) {
+	uri := URI{}
+
+	// binding to URI
+	if err := c.BindUri(&uri); err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+	id, err := uuid.Parse(uri.Id)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+	resUser, err := uc.us.GetUser(id)
+	if err != nil {
+		c.AbortWithError(http.StatusUnprocessableEntity, err)
+	}
+	c.JSON(http.StatusOK, resUser)
 }

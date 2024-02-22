@@ -2,6 +2,7 @@ package mongodb
 
 import (
 	"context"
+	"errors"
 	"log"
 	"os"
 	"testing"
@@ -50,4 +51,52 @@ func TestUserRepository_AddUser(t *testing.T) {
 	assert.Nil(t, userErr)
 	assert.EqualValues(t, user.Id, retrievedUser.Id)
 	assert.EqualValues(t, user.Email, retrievedUser.Email)
+}
+
+func TestUserRepository_GetUser(t *testing.T) {
+	repo, err := NewMongoUserRepository(context.TODO(), mongoServer.URI())
+	if err != nil {
+		t.Error(err)
+	}
+
+	// Create a new User
+	expectedUser := user.User{
+		Email:    "test@test.com",
+		Password: "",
+		Id:       uuid.New(),
+	}
+	newUser := Create(expectedUser)
+	_, insertErr := repo.user.InsertOne(context.TODO(), newUser)
+	if insertErr != nil {
+		t.Error(insertErr)
+	}
+
+	// Build our needed testcase data struct
+	type testCase struct {
+		name        string
+		arg         uuid.UUID
+		expectedErr error
+	}
+	// Create new test cases
+	testCases := []testCase{
+		{
+			name:        "Get User by id",
+			arg:         expectedUser.Id,
+			expectedErr: nil,
+		},
+		{
+			name:        "Get User by non-existent id",
+			arg:         uuid.New(),
+			expectedErr: errors.New("user not found"),
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+
+			// Get User
+			_, err := repo.GetUser(tc.arg)
+			assert.Equal(t, tc.expectedErr, err)
+		})
+	}
 }

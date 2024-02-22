@@ -47,4 +47,25 @@ paths:
           schema:
             type: object
       summary: add a new user to the user list
+  /user/{id}:
+    get:
+      operationId: get-user-by-id
+      parameters:
+      - description: user ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.User'
+        "404":
+          description: Not Found
+          schema:
+            type: object
+      summary: get a user record by ID
 swagger: "2.0"

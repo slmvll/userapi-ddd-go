@@ -19,6 +19,7 @@ func Router(ctrl *user.UserController) *gin.Engine {
 	v1 := r.Group("/api/v1")
 	{
 		v1.POST("user", ctrl.AddUser)
+		v1.GET("user/:id", ctrl.GetUserById)
 	}
 
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

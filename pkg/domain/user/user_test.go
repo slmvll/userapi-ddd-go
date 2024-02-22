@@ -4,12 +4,14 @@ import (
 	"errors"
 	"testing"
 	"userapi-ddd-go/pkg/domain/user"
+	"userapi-ddd-go/pkg/domain/user/mocks"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestUser_NewUser(t *testing.T) {
-
 	// Build our needed testcase data struct
 	type testCase struct {
 		name        string
@@ -39,4 +41,22 @@ func TestUser_NewUser(t *testing.T) {
 			assert.Equal(t, tc.expectedErr, err)
 		})
 	}
+}
+
+func TestUser_GetUser(t *testing.T) {
+	addedUser := user.User{
+		Email: "test@test.com",
+	}
+
+	repo := &mocks.UserRepository{}
+	repo.On("GetUser", mock.AnythingOfType("uuid.UUID")).
+		Return(addedUser, nil).
+		Once()
+
+	service := user.NewUserService(repo)
+
+	_, err := service.GetUser(uuid.New())
+
+	assert.Equal(t, nil, err)
+
 }

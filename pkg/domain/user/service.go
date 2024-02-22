@@ -4,6 +4,7 @@ import "github.com/google/uuid"
 
 type UserService interface {
 	AddUser(User) (uuid.UUID, error)
+	GetUser(uuid.UUID) (User, error)
 }
 
 type userService struct {
@@ -15,7 +16,6 @@ func NewUserService(r UserRepository) UserService {
 }
 
 func (us *userService) AddUser(u User) (uuid.UUID, error) {
-
 	newUser, err := NewUser(u.Email, u.Password)
 	if err != nil {
 		return uuid.UUID{}, err
@@ -26,4 +26,8 @@ func (us *userService) AddUser(u User) (uuid.UUID, error) {
 	}
 
 	return newUser.Id, nil
+}
+
+func (ts *userService) GetUser(u uuid.UUID) (User, error) {
+	return ts.r.GetUser(u)
 }
