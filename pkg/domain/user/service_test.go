@@ -49,3 +49,20 @@ func TestUser_AddUser(t *testing.T) {
 		})
 	}
 }
+
+func TestTask_GetAllUsers(t *testing.T) {
+	addedUser := user.User{
+		Email: "test@test.com",
+	}
+
+	repo := &mocks.UserRepository{}
+	repo.On("GetAllUsers").
+		Return([]user.User{addedUser}, nil).
+		Once()
+
+	service := user.NewUserService(repo)
+
+	_, err := service.GetAllUsers()
+
+	assert.Equal(t, nil, err)
+}

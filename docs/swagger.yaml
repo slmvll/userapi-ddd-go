@@ -26,6 +26,16 @@ info:
   version: "1.0"
 paths:
   /user:
+    get:
+      operationId: get-all-users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.User'
+      summary: get all users
     post:
       operationId: create-user
       parameters:

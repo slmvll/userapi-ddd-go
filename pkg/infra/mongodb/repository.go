@@ -58,6 +58,26 @@ func (ur *MongoUserRepository) GetUser(id uuid.UUID) (user.User, error) {
 	return retrievedUser.ToDomain(), nil
 }
 
+func (ur *MongoUserRepository) GetAllUsers() ([]user.User, error) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	cursor, err := ur.user.Find(ctx, bson.D{})
+
+	var resultsUsers []MongoUser
+	if err = cursor.All(ctx, &resultsUsers); err != nil {
+		return []user.User{}, err
+	}
+
+	var retrievedUsers []user.User
+	for _, result := range resultsUsers {
+		t := result.ToDomain()
+		retrievedUsers = append(retrievedUsers, t)
+	}
+
+	return retrievedUsers, nil
+}
+
 func (m MongoUser) ToDomain() user.User {
 	// Create a ProxyUser
 	u := user.User{

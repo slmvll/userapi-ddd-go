@@ -68,3 +68,16 @@ func (uc UserController) GetUserById(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resUser)
 }
+
+// @Summary get all users
+// @ID get-all-users
+// @Produce json
+// @Success 200 {object} user.User
+// @Router /user [get]
+func (uc UserController) GetUsers(c *gin.Context) {
+	users, err := uc.us.GetAllUsers()
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+	}
+	c.JSON(http.StatusOK, users)
+}

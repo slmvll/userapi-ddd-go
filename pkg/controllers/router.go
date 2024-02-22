@@ -20,6 +20,7 @@ func Router(ctrl *user.UserController) *gin.Engine {
 	{
 		v1.POST("user", ctrl.AddUser)
 		v1.GET("user/:id", ctrl.GetUserById)
+		v1.GET("user", ctrl.GetUsers)
 	}
 
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

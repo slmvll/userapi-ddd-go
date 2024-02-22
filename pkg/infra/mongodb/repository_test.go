@@ -100,3 +100,37 @@ func TestUserRepository_GetUser(t *testing.T) {
 		})
 	}
 }
+
+func TestUserRepository_GetAllUsers(t *testing.T) {
+	repo, err := NewMongoUserRepository(context.TODO(), mongoServer.URI())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Create new slice of Users
+	expectedUsers := [2]user.User{
+		{
+			Email: "test1@test.com",
+			Id:    uuid.New(),
+		},
+		{
+			Email: "test2@test.com",
+			Id:    uuid.New(),
+		},
+	}
+	mongoUsers := make([]interface{}, 2)
+	for _, eu := range expectedUsers {
+		newUser := Create(eu)
+		mongoUsers = append(mongoUsers, newUser)
+	}
+	_, insertErr := repo.user.InsertMany(context.TODO(), mongoUsers)
+	if insertErr != nil {
+		t.Error(insertErr)
+	}
+
+	users, err := repo.GetAllUsers()
+	if err != nil {
+		t.Error(err)
+	}
+	assert.Equal(t, 1, len(users), "Expected 1 user")
+}

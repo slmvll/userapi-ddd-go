@@ -33,6 +33,36 @@ func (_m *UserRepository) AddUser(_a0 user.User) error {
 	return r0
 }
 
+// GetAllUsers provides a mock function with given fields:
+func (_m *UserRepository) GetAllUsers() ([]user.User, error) {
+	ret := _m.Called()
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetAllUsers")
+	}
+
+	var r0 []user.User
+	var r1 error
+	if rf, ok := ret.Get(0).(func() ([]user.User, error)); ok {
+		return rf()
+	}
+	if rf, ok := ret.Get(0).(func() []user.User); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]user.User)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func() error); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // GetUser provides a mock function with given fields: _a0
 func (_m *UserRepository) GetUser(_a0 uuid.UUID) (user.User, error) {
 	ret := _m.Called(_a0)

@@ -5,6 +5,7 @@ import "github.com/google/uuid"
 type UserService interface {
 	AddUser(User) (uuid.UUID, error)
 	GetUser(uuid.UUID) (User, error)
+	GetAllUsers() ([]User, error)
 }
 
 type userService struct {
@@ -30,4 +31,8 @@ func (us *userService) AddUser(u User) (uuid.UUID, error) {
 
 func (ts *userService) GetUser(u uuid.UUID) (User, error) {
 	return ts.r.GetUser(u)
+}
+
+func (ts *userService) GetAllUsers() ([]User, error) {
+	return ts.r.GetAllUsers()
 }
