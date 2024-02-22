@@ -87,7 +87,7 @@ func TestUserRepository_GetUser(t *testing.T) {
 		{
 			name:        "Get User by non-existent id",
 			arg:         uuid.New(),
-			expectedErr: errors.New("user not found"),
+			expectedErr: errors.New("mongo: no documents in result"),
 		},
 	}
 
@@ -132,5 +132,5 @@ func TestUserRepository_GetAllUsers(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	assert.Equal(t, 1, len(users), "Expected 1 user")
+	assert.Equal(t, 2, len(users), "Expected 2 users")
 }

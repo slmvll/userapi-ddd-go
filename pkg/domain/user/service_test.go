@@ -50,7 +50,7 @@ func TestUser_AddUser(t *testing.T) {
 	}
 }
 
-func TestTask_GetAllUsers(t *testing.T) {
+func TestUser_GetAllUsers(t *testing.T) {
 	addedUser := user.User{
 		Email: "test@test.com",
 	}
