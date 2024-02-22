@@ -20,6 +20,7 @@ func (us *userService) AddUser(u User) (uuid.UUID, error) {
 	if err != nil {
 		return uuid.UUID{}, err
 	}
+	// TO-DO: If password is empty -> autogenerate
 	if errAdd := us.r.AddUser(newUser); errAdd != nil {
 		return uuid.UUID{}, errAdd
 	}
