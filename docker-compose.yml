@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api
+    depends_on:
+      - mongo
+    ports:
+    - "10080:8081"
+
+  mongo:
+    image: mongo:4.4.18
+    restart: always
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongotest
+      MONGO_INITDB_ROOT_PASSWORD: test123
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  mongo-express:
+    image: mongo-express:latest
+    restart: always
+    container_name: mongo-express
+    ports:
+      - "10081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongotest
+      ME_CONFIG_MONGODB_ADMINPASSWORD: test123
+      ME_CONFIG_MONGODB_URL: mongodb://mongotest:test123@mongo:27017/
+
+volumes:
+  mongodb_data:
