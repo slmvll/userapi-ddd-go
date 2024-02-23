@@ -23,11 +23,11 @@ import (
 // @license.name	MIT
 // @license.url 	https://opensource.org/licenses/MIT
 
-// @host 		localhost:8080
+// @host 		localhost:8081
 // @BasePath 	/api/v1
 // @query.collection.format multi
 func main() {
-	userRepository, err := mongodb.NewMongoUserRepository(context.Background(), "mongodb://mongotest:test123@mongo:27017")
+	userRepository, err := mongodb.NewMongoUserRepository(context.Background(), "mongodb://mongotest:test123@localhost:27017")
 	if err != nil {
 		panic(err)
 	}

@@ -22,6 +22,7 @@ func NewUserController(s user.UserService) *UserController {
 	return &UserController{s}
 }
 
+// AddUser godoc
 // @Summary add a new user to the user list
 // @ID create-user
 // @Produce json
@@ -42,6 +43,7 @@ func (uc UserController) AddUser(c *gin.Context) {
 	c.JSON(http.StatusAccepted, &body)
 }
 
+// GetUserById godoc
 // @Summary get a user record by ID
 // @ID get-user-by-id
 // @Produce json
@@ -69,6 +71,7 @@ func (uc UserController) GetUserById(c *gin.Context) {
 	c.JSON(http.StatusOK, resUser)
 }
 
+// GetUsers godoc
 // @Summary get all users
 // @ID get-all-users
 // @Produce json

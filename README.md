@@ -1,6 +1,6 @@
 # User API in GO (DDD)
 
-User API allows the client to create a user or get user by its id.
+User API allows the client to create a user, get user by its id, or get all users from the repository.
 
 This project is sample project that shows a REST API 
 with domain driven approach (DDD) with hexagonal architecture in Golang and Gin.

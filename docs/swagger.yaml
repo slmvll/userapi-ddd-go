@@ -11,7 +11,7 @@ definitions:
       status:
         type: boolean
     type: object
-host: localhost:8080
+host: localhost:8081
 info:
   contact:
     email: slm092013@gmail.com
